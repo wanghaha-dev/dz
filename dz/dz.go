@@ -1,4 +1,4 @@
-package main
+package dz
 
 import (
 	"errors"
