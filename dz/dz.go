@@ -6,6 +6,7 @@ import (
 	"github.com/disintegration/imaging"
 	"github.com/fogleman/gg"
 	"github.com/nfnt/resize"
+	"golang.org/x/image/tiff"
 	"image"
 	"image/jpeg"
 	"math"
@@ -40,13 +41,24 @@ func obtainFilter(filter string) string {
 	return filter
 }
 
+func LoadTif(path string) (image.Image, error) {
+	file, err := os.Open(path)
+	if err != nil {
+		return nil, err
+	}
+	defer file.Close()
+	return tiff.Decode(file)
+}
+
 func loadImage(filePath, format string) (image.Image, error) {
 	if format == "" || format == "jpg" {
 		return gg.LoadJPG(filePath)
 	} else if format == "png" {
 		return gg.LoadPNG(filePath)
+	} else if format == "tif" || format=="tiff"{
+		return LoadTif(filePath)
 	} else {
-		panic(errors.New("only jpg and png are supported"))
+		panic(errors.New("only jpg and png and tif are supported"))
 	}
 }
 
