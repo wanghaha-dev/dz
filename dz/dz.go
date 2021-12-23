@@ -16,7 +16,9 @@ import (
 	"text/template"
 )
 
-const DZITemplate = `<?xml version="1.0" ?><Image Format="{{.Format}}" Overlap="{{.Overlap}}" TileSize="{{.TileSize}}" xmlns="http://schemas.microsoft.com/deepzoom/2008"><Size Height="{{.Height}}" Width="{{.Width}}"/></Image>`
+const DZITemplate = `<?xml version="1.0" ?><Image Format="{{.Format}}" Overlap="{{.Overlap}}" TileSize="{{.TileSize}}" xmlns="http://schemas.microsoft.com/deepzoom/2009"><Size Height="{{.Height}}" Width="{{.Width}}"/></Image>`
+
+
 
 var RESIZE_FILTERS = map[string]resize.InterpolationFunction{
 	"bilinear": resize.Bilinear,
@@ -205,8 +207,8 @@ func CreateDzi(source string, format string, destination string) {
 
 	// output image quality
 	creator.ImageQuality = 0.8
-	tileSize := 256
-	overlap := 0
+	tileSize := 254
+	overlap := 1
 	creator.New(source, format, tileSize, overlap)
 
 	// destination of dzi file path
