@@ -207,6 +207,10 @@ func (ic *ImageCreator) create(destination string) {
 func CreateDzi(source string, format string, destination string) {
 	creator := new(ImageCreator)
 
+	if format == "tif" || format == "tiff" {
+		format = "jpg"
+	}
+
 	// output image quality
 	creator.ImageQuality = 0.8
 	tileSize := 254
