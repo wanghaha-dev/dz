@@ -41,14 +41,14 @@ func obtainFilter(filter string) string {
 }
 
 func loadImage(filePath, format string) (image.Image, error) {
-	if format == "" || format == "jpg" {
+	if format == "" || format == "jpg"  || format == "jpeg"{
 		return gg.LoadJPG(filePath)
 	} else if format == "png" {
 		return gg.LoadPNG(filePath)
 	} else if format == "tif" || format=="tiff"{
 		return gg.LoadJPG(filePath)
 	} else {
-		panic(errors.New("only jpg and png and tif are supported"))
+		panic(errors.New("only jpg and jpeg and png and tif are supported"))
 	}
 }
 
