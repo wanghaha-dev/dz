@@ -48,7 +48,8 @@ func loadImage(filePath, format string) (image.Image, error) {
 	} else if format == "tif" || format=="tiff"{
 		return gg.LoadJPG(filePath)
 	} else {
-		panic(errors.New("only jpg and jpeg and png and tif are supported"))
+		return gg.LoadJPG(filePath)
+		//panic(errors.New("only jpg and jpeg and png and tif are supported"))
 	}
 }
 
