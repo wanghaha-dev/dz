@@ -170,13 +170,15 @@ func (ic *ImageCreator) getImage(level int) image.Image {
 }
 
 // New Creates Deep Zoom image from source file
-func (ic *ImageCreator) New(source, format string, tileSize, overlap int) *ImageCreator {
+func (ic *ImageCreator) New(source, format string, tileSize, overlap int) (*ImageCreator, error) {
 	img, err := loadImage(source, format)
-	check(err)
+	if err != nil {
+		return nil, err
+	}
 	ic.Image = img
 	width, height := img.Bounds().Dx(), img.Bounds().Dy()
 	ic.dzid = &DeepZoomImageDescriptor{Width: width, Height: height, TileSize: tileSize, Overlap: overlap, Format: format}
-	return ic
+	return ic, nil
 }
 
 func (ic *ImageCreator) create(destination string) {
@@ -204,7 +206,7 @@ func (ic *ImageCreator) create(destination string) {
 }
 
 // CreateDzi create dzi
-func CreateDzi(source string, format string, destination string) {
+func CreateDzi(source string, format string, destination string) error {
 	creator := new(ImageCreator)
 
 	if format == "tif" || format == "tiff" {
@@ -215,8 +217,13 @@ func CreateDzi(source string, format string, destination string) {
 	creator.ImageQuality = 0.8
 	tileSize := 254
 	overlap := 1
-	creator.New(source, format, tileSize, overlap)
+	_, err := creator.New(source, format, tileSize, overlap)
+	if err != nil {
+		return err
+	}
 
 	// destination of dzi file path
 	creator.create(destination)
+	return nil
 }
+
