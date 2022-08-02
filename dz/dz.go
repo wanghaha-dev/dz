@@ -3,9 +3,6 @@ package dz
 import (
 	"errors"
 	"fmt"
-	"github.com/disintegration/imaging"
-	"github.com/fogleman/gg"
-	"github.com/nfnt/resize"
 	"image"
 	"image/jpeg"
 	"math"
@@ -14,11 +11,13 @@ import (
 	"strconv"
 	"strings"
 	"text/template"
+
+	"github.com/disintegration/imaging"
+	"github.com/fogleman/gg"
+	"github.com/nfnt/resize"
 )
 
 const DZITemplate = `<?xml version="1.0" ?><Image Format="{{.Format}}" Overlap="{{.Overlap}}" TileSize="{{.TileSize}}" xmlns="http://schemas.microsoft.com/deepzoom/2009"><Size Height="{{.Height}}" Width="{{.Width}}"/></Image>`
-
-
 
 var RESIZE_FILTERS = map[string]resize.InterpolationFunction{
 	"bilinear": resize.Bilinear,
@@ -41,14 +40,13 @@ func obtainFilter(filter string) string {
 }
 
 func loadImage(filePath, format string) (image.Image, error) {
-	if format == "" || format == "jpg"  || format == "jpeg"{
+	fmt.Println("format:", format)
+	if format == "" || format == "jpg" || format == "jpeg" {
 		return gg.LoadJPG(filePath)
 	} else if format == "png" {
 		return gg.LoadPNG(filePath)
-	} else if format == "tif" || format=="tiff"{
-		return gg.LoadJPG(filePath)
 	} else {
-		return nil, errors.New("only jpg and jpeg and png and tif and tiff are supported")
+		return nil, errors.New("only jpg and jpeg and png are supported")
 	}
 }
 
@@ -209,10 +207,6 @@ func (ic *ImageCreator) create(destination string) {
 func CreateDzi(source string, format string, destination string) error {
 	creator := new(ImageCreator)
 
-	if format == "tif" || format == "tiff" {
-		format = "jpg"
-	}
-
 	// output image quality
 	creator.ImageQuality = 0.8
 	tileSize := 254
@@ -226,4 +220,3 @@ func CreateDzi(source string, format string, destination string) error {
 	creator.create(destination)
 	return nil
 }
-
