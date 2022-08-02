@@ -40,7 +40,6 @@ func obtainFilter(filter string) string {
 }
 
 func loadImage(filePath, format string) (image.Image, error) {
-	fmt.Println("format:", format)
 	if format == "" || format == "jpg" || format == "jpeg" {
 		return gg.LoadJPG(filePath)
 	} else if format == "png" {
